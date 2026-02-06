@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multilingual LM Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { display: flex; flex-direction: column; gap: 20px; }
+        textarea { width: 100%; height: 100px; padding: 10px; font-size: 16px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .output { border: 1px solid #ccc; padding: 15px; min-height: 100px; background: #f9f9f9; }
+        .language-tag { display: inline-block; margin: 5px; padding: 5px 10px; background: #e0e0e0; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Multilingual Language Model Demo</h1>
+        
+        <div>
+            <strong>Language:</strong>
+            <span class="language-tag" onclick="setLanguage('[EN] ')">English</span>
+            <span class="language-tag" onclick="setLanguage('[HI] ')">Hindi</span>
+            <span class="language-tag" onclick="setLanguage('[PA] ')">Punjabi</span>
+        </div>
+        
+        <textarea id="prompt" placeholder="Enter your prompt here..."></textarea>
+        
+        <div>
+            <label>Temperature: <input type="range" id="temp" min="0.1" max="2.0" step="0.1" value="0.7"></label>
+            <label>Max Length: <input type="number" id="maxlen" min="20" max="500" value="100"></label>
+        </div>
+        
+        <button onclick="generate()">Generate</button>
+        
+        <div class="output" id="output">Response will appear here...</div>
+    </div>
+    
+    <script>
+        function setLanguage(tag) {
+            document.getElementById('prompt').value = tag;
+        }
+        
+        async function generate() {
+            const prompt = document.getElementById('prompt').value;
+            const temp = document.getElementById('temp').value;
+            const maxlen = document.getElementById('maxlen').value;
+            
+            document.getElementById('output').innerHTML = 'Generating...';
+            
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({prompt, temp, maxlen})
+                });
+                
+                const data = await response.json();
+                document.getElementById('output').innerHTML = data.response;
+            } catch (error) {
+                document.getElementById('output').innerHTML = 'Error: ' + error;
+            }
+        }
+    </script>
+</body>
+</html>
+    
