@@ -1,0 +1,153 @@
+{
+	"model_id": "trimurti-lm",
+	"model_name": "Trimurti-LM",
+	"model_type": "language_model",
+	"architecture": "GPT2",
+	"framework": "transformers",
+	
+	"languages": {
+		"supported": ["en", "hi", "pa"],
+		"language_tags": ["[EN]", "[HI]", "[PA]"],
+		"description": "Trilingual language model supporting English, Hindi, and Punjabi"
+	},
+	
+	"model_config": {
+		"vocab_size": 8000,
+		"n_positions": 128,
+		"n_embd": 256,
+		"n_layer": 4,
+		"n_head": 4,
+		"n_inner": 512,
+		"activation_function": "gelu_new",
+		"attn_pdrop": 0.1,
+		"embd_pdrop": 0.1,
+		"resid_pdrop": 0.1,
+		"estimated_parameters": "4.7M"
+	},
+	
+	"tokenizer": {
+		"type": "sentencepiece",
+		"model_type": "unigram",
+		"vocab_size": 8000,
+		"character_coverage": 0.9995,
+		"byte_fallback": true,
+		"model_path": "final_corpus/multilingual_spm.model"
+	},
+	
+	"training": {
+		"corpus": "final_corpus/multilingual_corpus_train.txt",
+		"validation": "final_corpus/multilingual_corpus_val.txt",
+		"total_steps": 5000,
+		"batch_size": 2,
+		"gradient_accumulation": 8,
+		"learning_rate": 2e-4,
+		"warmup_steps": 1000,
+		"effective_batch_size": 16
+	},
+	
+	"checkpoints": {
+		"path": "checkpoints_tiny",
+		"available_checkpoints": [
+			"step1000",
+			"step2000",
+			"step3000",
+			"step4000",
+			"step5000",
+			"final"
+		]
+	},
+	
+	"evaluation": {
+		"overall_accuracy": 100.0,
+		"english_accuracy": 100.0,
+		"hindi_accuracy": 100.0,
+		"punjabi_accuracy": 100.0,
+		"mixed_accuracy": 100.0,
+		"avg_english_perplexity": 42.29,
+		"avg_hindi_perplexity": 50.56,
+		"avg_punjabi_perplexity": 63.42
+	},
+	
+	"entry_points": {
+		"training": "python train_model.py",
+		"testing": "python test_model.py",
+		"evaluation": "python evaluate_model.py",
+		"preprocessing": "python preprocess.py",
+		"web_interface": "python web_interface.py"
+	},
+	
+	"dependencies": [
+		"torch",
+		"transformers",
+		"sentencepiece",
+		"tqdm",
+		"gradio",
+		"pandas",
+		"numpy"
+	],
+	
+	"filter": [
+		{
+			"bool": {
+				"should": [
+					{
+						"term": { "path": "model_index.json" }
+					},
+					{
+						"regexp": { "path": "[^/]*\\.safetensors" }
+					},
+					{
+						"regexp": { "path": "[^/]*\\.ckpt" }
+					},
+					{
+						"regexp": { "path": "[^/]*\\.bin" }
+					}
+				],
+				"minimum_should_match": 1
+			}
+		}
+	],
+	
+	"files": [
+		{
+			"path": "checkpoints_tiny/final/model.safetensors",
+			"description": "Final trained model weights"
+		},
+		{
+			"path": "checkpoints_tiny/final/config.json",
+			"description": "Model configuration"
+		},
+		{
+			"path": "checkpoints_tiny/final/generation_config.json",
+			"description": "Generation settings"
+		},
+		{
+			"path": "final_corpus/multilingual_spm.model",
+			"description": "SentencePiece tokenizer model"
+		},
+		{
+			"path": "final_corpus/multilingual_spm.vocab",
+			"description": "Tokenizer vocabulary"
+		},
+		{
+			"path": "train_model.py",
+			"description": "Training script"
+		},
+		{
+			"path": "test_model.py",
+			"description": "Testing and inference script"
+		},
+		{
+			"path": "evaluate_model.py",
+			"description": "Evaluation script"
+		},
+		{
+			"path": "preprocess.py",
+			"description": "Data preprocessing script"
+		},
+		{
+			"path": "web_interface.py",
+			"description": "Gradio web interface"
+		}
+	]
+}
