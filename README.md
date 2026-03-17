@@ -25,26 +25,26 @@ Trimurti-LM is a lightweight transformer-based language model trained on multili
 │                                                         │
 │  Input Text ──► SentencePiece Tokenizer ──► Embeddings  │
 │                                                         │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │           GPT2 Transformer Blocks (×4)          │   │
-│  │  ┌─────────────────────────────────────────┐    │   │
-│  │  │  Multi-Head Self-Attention (4 heads)    │    │   │
-│  │  │  - Query, Key, Value projections         │    │   │
-│  │  │  - Attention dropout (0.1)              │    │   │
-│  │  └─────────────────────────────────────────┘    │   │
-│  │                        │                         │   │
-│  │  ┌─────────────────────────────────────────┐    │   │
-│  │  │  Feed-Forward Network (GELU)           │    │   │
-│  │  │  - Hidden: 512                          │    │   │
-│  │  │  - Dropout: 0.1                         │    │   │
-│  │  └─────────────────────────────────────────┘    │   │
-│  │                        │                         │   │
-│  │  ┌─────────────────────────────────────────┐    │   │
-│  │  │  LayerNorm → Residual Connections        │    │   │
-│  │  └─────────────────────────────────────────┘    │   │
-│  └─────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │           GPT2 Transformer Blocks (×4)          │    │
+│  │  ┌─────────────────────────────────────────┐    │    │
+│  │  │  Multi-Head Self-Attention (4 heads)    │    │    │
+│  │  │  - Query, Key, Value projections        │    │    │
+│  │  │  - Attention dropout (0.1)              │    │    │
+│  │  └─────────────────────────────────────────┘    │    │
+│  │                        │                        │    │
+│  │  ┌─────────────────────────────────────────┐    │    │
+│  │  │  Feed-Forward Network (GELU)            │    │    │
+│  │  │  - Hidden: 512                          │    │    │
+│  │  │  - Dropout: 0.1                         │    │    │
+│  │  └─────────────────────────────────────────┘    │    │
+│  │                        │                        │    │
+│  │  ┌─────────────────────────────────────────┐    │    │
+│  │  │  LayerNorm → Residual Connections       │    │    │
+│  │  └─────────────────────────────────────────┘    │    │
+│  └─────────────────────────────────────────────────┘    │
 │                                                         │
-│  Linear Head ──► Softmax ──► Next Token Prediction     │
+│  Linear Head ──► Softmax ──► Next Token Prediction      │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
